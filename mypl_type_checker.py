@@ -317,6 +317,10 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
+                elif lexeme_list[i] not in object_params:
+                    struct_name = list(object_params.values())[0]
+                    object_params = self.sym_table.get_info(struct_name)
+                    self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                 elif lexeme_list[i] in object_params:
                     self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                     # get struct type if type is a struct
@@ -402,6 +406,7 @@ class TypeChecker(ast.Visitor):
                 # lexeme += '.'
                 lexeme = ''
         lexeme_list.append(lexeme)
+        types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
         if is_object:   # if id is an object
             object_name = None
             object_params = None
@@ -410,6 +415,10 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
+                elif lexeme_list[i] not in object_params:
+                    struct_name = list(object_params.values())[0]
+                    object_params = self.sym_table.get_info(struct_name)
+                    self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                 elif lexeme_list[i] in object_params:
                     self.current_type = object_params.get(lexeme_list[i])   # check if types are valid
                 else:
@@ -417,7 +426,6 @@ class TypeChecker(ast.Visitor):
                 i = i + 1
 
         else:   # if id is not an object
-            types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
             if self.sym_table.id_exists(lexeme):
                 self.current_type = self.sym_table.get_info(lexeme)
                 if self.current_type not in types and self.sym_table.id_exists(self.current_type):
