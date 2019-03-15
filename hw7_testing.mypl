@@ -14,14 +14,6 @@ var len = 6;
 var i = 1;
 var ptr = head;
 
-while i < len do
-    set ptr.val = i * 10;
-    set ptr.next = new Node;
-    set ptr = ptr.next;
-    set i = i + 1;
-end
-
-print("[");
 set i = 1;
 set ptr = head;
 
