@@ -24,14 +24,6 @@ end
 print("[");
 set i = 1;
 set ptr = head;
-while i < len do
-    print(itos(ptr.val));
-    if i < (len - 1) then
-        print(", ");
-    end
-    set ptr = ptr.next;
-    set i = i + 1;
-end
-print("]\n");
+
 
 
