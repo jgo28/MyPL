@@ -317,7 +317,7 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
-                elif lexeme_list[i] not in object_params:
+                elif lexeme_list[i] not in object_params and isinstance(object_params, dict):
                     struct_name = list(object_params.values())[0]
                     object_params = self.sym_table.get_info(struct_name)
                     self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
@@ -415,7 +415,7 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
-                elif lexeme_list[i] not in object_params:
+                elif lexeme_list[i] not in object_params and isinstance(object_params, dict):
                     struct_name = list(object_params.values())[0]
                     object_params = self.sym_table.get_info(struct_name)
                     self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
