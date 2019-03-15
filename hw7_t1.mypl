@@ -1,0 +1,43 @@
+
+var a = 0;
+
+struct S1 
+    var x = 0;
+    var y = a + 1;
+end
+
+var s1 = new S1;
+
+print("should print 0: " + itos(s1.x) + "\n");
+print("should print 1: " + itos(s1.y) + "\n");
+
+set a = 1;
+
+set s1 = new S1;
+
+print("should print 0: " + itos(s1.x) + "\n");
+print("should print 2: " + itos(s1.y) + "\n");
+
+set a = 2;
+
+struct S2
+    var s1 = new S1;
+end
+
+var s2 = new S2;
+
+print("should print 0: " + itos(s2.s1.x) + "\n");
+print("should print 3: " + itos(s2.s1.y) + "\n");
+
+struct S3
+   var s2: S2 = nil;
+end
+
+var s3 = new S3;
+set s3.s2 = new S2;
+set s3.s2.s1.x = 5;
+
+print("should print 5: " + itos(s3.s2.s1.x) + "\n");
+print("should print 3: " + itos(s3.s2.s1.y) + "\n");
+
+

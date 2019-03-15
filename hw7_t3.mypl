@@ -1,0 +1,15 @@
+
+fun int fac(n: int)
+    if n <= 0 then
+        return 1;
+    else
+        var r = n * fac(n - 1);
+        return r;
+    end
+end
+
+var v = 30;
+
+print( "fac(" + itos(v) + ") => " + itos(fac(v)) + "\n" );
+
+

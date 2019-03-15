@@ -1,0 +1,4 @@
+
+print("Please enter your name: ");
+var name = reads();
+print("Hello " + name + "!\n");
