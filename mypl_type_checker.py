@@ -145,8 +145,6 @@ class TypeChecker(ast.Visitor):
         rhs_type = self.current_type
         assign_stmt.lhs.accept(self)
         lhs_type = self.current_type
-        print(lhs_type)
-        print(rhs_type)
         if rhs_type != token.NIL and rhs_type != lhs_type:
             msg = 'mismatch type in assignment'
             self.__error(msg, assign_stmt.lhs.path[0])
@@ -340,8 +338,6 @@ class TypeChecker(ast.Visitor):
                 self.current_lexeme = lexeme
             else:
                 self.__error('value has not been declared', self.current_token)
-            # print(lval.path[0])
-            # print(self.current_type)
 
     def visit_fun_param(self, fun_param):
         self.current_lexeme = fun_param.param_name.lexeme
@@ -434,9 +430,6 @@ class TypeChecker(ast.Visitor):
         else:   # if id is not an object
             if self.sym_table.id_exists(lexeme):
                 self.current_type = self.sym_table.get_info(lexeme)
-                if self.current_type not in types and self.sym_table.id_exists(self.current_type):
-                    struct_name = self.sym_table.get_info(self.current_type)
-                    self.current_type = struct_name
                 self.current_lexeme = lexeme
             else:
                 self.__error('value has not been declared', self.current_token)
