@@ -122,9 +122,6 @@ class TypeChecker(ast.Visitor):
         else:   # implicit declaration
             types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
             if self.current_type not in types:  # type is a struct
-                # print(var_decl.var_id.lexeme)
-                # print(self.current_type)
-                # print(self.current_lexeme)
                 if self.sym_table.id_exists(var_decl.var_id.lexeme):    # update value if already in table
                     self.sym_table.set_info(var_decl.var_id.lexeme, self.current_lexeme)
                 else:   # add the variable to the sym table
@@ -161,7 +158,10 @@ class TypeChecker(ast.Visitor):
         self.sym_table.pop_environment()
 
     def visit_fun_decl_stmt(self, fun_decl):
-        return_type = fun_decl.return_type.tokentype
+        if fun_decl.return_type.tokentype == token.ID:
+            return_type = fun_decl.return_type.lexeme
+        else:
+            return_type = fun_decl.return_type.tokentype
         fun_name = fun_decl.fun_name.lexeme
         param_list = []     # list of parameters
         param_token_list = []   # list of token parameters
@@ -382,7 +382,6 @@ class TypeChecker(ast.Visitor):
             self.__error('function has not been declared', self.current_token)
         fun_type = self.sym_table.get_info(fun_name)   # type of the function
         self.current_type = self.sym_table.get_info('return')
-
         if fun_type[0] == 0:    # the function takes in no parameters
             self.current_type = fun_type[1]
         else:   # function takes in parameters
@@ -392,6 +391,8 @@ class TypeChecker(ast.Visitor):
                 arg.accept(self)
                 arg_list.append(self.current_type)  # add the function parameters to a list
             self.current_type = fun_type[1]     # set output type of function
+            print(fun_type_arg_list)
+            print(arg_list)
             if fun_type_arg_list != arg_list:
                 if token.NIL not in arg_list:   # if one of the inputs is not nil throw error
                     self.__error('parameter types do not match up with function', self.current_token)
