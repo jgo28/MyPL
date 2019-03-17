@@ -1,43 +1,80 @@
+#-----------------------------------
+# binary search tree implementation
+#-----------------------------------
 
-var a = 0;
-
-struct S1
-    var x = 0;
-    var y = a + 1;
+# tree node that holds an int value
+struct Node
+    var value = 0;
+    var left: Node = nil;
+    var right: Node = nil;
 end
 
-var s1 = new S1;
-
-print("should print 0: " + itos(s1.x) + "\n");
-print("should print 1: " + itos(s1.y) + "\n");
-
-set a = 1;
-
-set s1 = new S1;
-
-print("should print 0: " + itos(s1.x) + "\n");
-print("should print 2: " + itos(s1.y) + "\n");
-
-set a = 2;
-
-struct S2
-    var s1 = new S1;
+# create a new tree
+fun Node make_tree(val: int)
+    var n = new Node;
+    set n.value = val;
+    return n;
 end
 
-var s2 = new S2;
-
-print("should print 0: " + itos(s2.s1.x) + "\n");
-print("should print 3: " + itos(s2.s1.y) + "\n");
-
-struct S3
-   var s2: S2 = nil;
+# insert a value into the given tree
+fun nil insert(tree: Node, val: int)
+    if tree == nil then
+        return;
+    end
+    if val <= tree.value then
+        if tree.left == nil then
+            set tree.left = new Node;
+            set tree.left.value = val;
+        else
+            insert(tree.left, val);
+        end
+    else
+        if tree.right == nil then
+            set tree.right = new Node;
+            set tree.right.value = val;
+        else
+            insert(tree.right, val);
+        end
+    end
 end
 
-var s3 = new S3;
-set s3.s2 = new S2;
-set s3.s2.s1.x = 5;
+# print out the tree in sorted order
+fun nil print_tree(tree: Node)
+    if tree != nil then
+        print_tree(tree.left);
+        print(" " + itos(tree.value));
+        print_tree(tree.right);
+    end
+end
 
-print("should print 5: " + itos(s3.s2.s1.x) + "\n");
-print("should print 3: " + itos(s3.s2.s1.y) + "\n");
+# get the height of the tree
+fun int height(tree: Node)
+    if tree == nil then
+        return 0;
+    else
+        var lh = height(tree.left);
+        var rh = height(tree.right);
+        if lh >= rh then
+            return 1 + lh;
+        else
+            return 1 + rh;
+        end
+    end
+end
 
+
+# example tree
+var tree = make_tree(10);
+insert(tree, 5);
+insert(tree, 15);
+insert(tree, 2);
+insert(tree, 12);
+insert(tree, 7);
+insert(tree, 1);
+insert(tree, 13);
+insert(tree, 14);
+print("Tree Values:");
+print_tree(tree);
+print("\n");
+print("Tree Height: " + itos(height(tree)) + "\n");
 

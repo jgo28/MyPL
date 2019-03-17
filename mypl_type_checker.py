@@ -342,6 +342,8 @@ class TypeChecker(ast.Visitor):
     def visit_fun_param(self, fun_param):
         self.current_lexeme = fun_param.param_name.lexeme
         self.current_type = fun_param.param_type.tokentype
+        if self.current_type is token.ID:
+            self.current_type = fun_param.param_type.lexeme
         self.sym_table.add_id(self.current_lexeme)
         self.sym_table.set_info(self.current_lexeme, self.current_type)
 
