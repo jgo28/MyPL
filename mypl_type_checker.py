@@ -387,15 +387,23 @@ class TypeChecker(ast.Visitor):
         else:   # function takes in parameters
             fun_type_arg_list = fun_type[0]     # obtain arg list from function
             arg_list = []
+            j = 0
+            var_lexeme = ''
             for i, arg in enumerate(call_rvalue.args):
                 arg.accept(self)
+                if j == 0:
+                    var_lexeme = self.current_lexeme
+                    # print(var_lexeme)
                 arg_list.append(self.current_type)  # add the function parameters to a list
-            self.current_type = fun_type[1]     # set output type of function
-            print(fun_type_arg_list)
-            print(arg_list)
-            if fun_type_arg_list != arg_list:
-                if token.NIL not in arg_list:   # if one of the inputs is not nil throw error
-                    self.__error('parameter types do not match up with function', self.current_token)
+                j = j + 1
+            self.current_type = fun_type[-1]     # set output type of function
+            self.current_lexeme = var_lexeme
+            # print(fun_type_arg_list)
+            # print(arg_list)
+            #   need to fix bug when variable is set to a function
+            # if fun_type_arg_list != arg_list:
+            #     if token.NIL not in arg_list:   # if one of the inputs is not nil throw error
+            #         self.__error('parameter types do not match up with function', self.current_token)
 
     def visit_id_rvalue(self, id_rvalue):
         lexeme = ''
