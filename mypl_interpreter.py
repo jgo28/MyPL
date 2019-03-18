@@ -100,15 +100,17 @@ class Interpreter(ast.Visitor):
         rhs_value = self.current_value
         self.sym_table.set_info(lhs_value, rhs_value)
 
-    #
-    # def visit_struct_decl_stmt(self, struct_decl):
-    #     self.__write('\nstruct')
-    #     self.__write(' ' + struct_decl.struct_id.lexeme + '\n')
-    #     self.indent += 1
-    #     for var_decl in struct_decl.var_decls:
-    #         var_decl.accept(self)
-    #     self.indent -= 1
-    #     self.__write('end\n\n')
+
+    def visit_struct_decl_stmt(self, struct_decl):
+        struct_lexeme = struct_decl.struct_id.lexeme
+        env_id = self.sym_table.get_env_id()
+        self.sym_table.add_id(struct_lexeme)
+        self.sym_table.set_info(struct_lexeme, [env_id, struct_decl])
+        self.sym_table.push_environment()
+        for var_decl in struct_decl.var_decls:
+            var_decl.accept(self)
+        self.sym_table.pop_environment()
+
     #
     # def visit_fun_decl_stmt(self, fun_decl):
     #     self.__write('\nfun ')
@@ -279,9 +281,22 @@ class Interpreter(ast.Visitor):
         elif simple_rvalue.val.tokentype == token.NIL:
             self.current_value = None
 
-    # def visit_new_rvalue(self, new_rvalue):
-    #     self.__write('new ')
-    #     self.__write(new_rvalue.struct_type.lexeme)
+    def visit_new_rvalue(self, new_rvalue):
+        struct_info = self.sym_table.get_info(new_rvalue.struct_type.lexeme)
+        # save current environment, go to struct def's environment
+        curr_env = self.sym_table.get_env_id()
+        self.sym_table.set_env_id(struct_info[0])
+        # create empty struct, initialize vars, reset environment
+        struct_obj = {}
+        self.sym_table.push_environment()
+        # initialize struct_obj w/ vars in struct_info[1]
+        for v in struct_info[1].var_decls:
+            struct_obj[v.var_id.lexeme] = self.sym_table.get_env_id()
+        self.sym_table.pop_environment()
+        self.sym_table.set_env_id(curr_env)     # return to starting environment
+        oid = id(struct_obj)
+        self.heap[oid] = struct_obj     # create oid, add struct_obj to the heap, assign current value
+        self.current_value = oid
 
     def visit_call_rvalue(self, call_rvalue):
         # handle built in functions first
