@@ -12,6 +12,10 @@ import mypl_ast as ast
 import mypl_error as error
 import mypl_symbol_table as sym_tbl
 
+
+class ReturnException(Exception): pass
+
+
 class Interpreter(ast.Visitor):
     """A MyPL interpreter visitor implementation"""
 

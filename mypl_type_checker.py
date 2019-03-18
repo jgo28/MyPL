@@ -80,6 +80,11 @@ class TypeChecker(ast.Visitor):
             var_decl_type = var_decl.var_type
             is_implicit = False
         var_decl.var_expr.accept(self)
+        var_id = var_decl.var_id
+        curr_env = self.sym_table.get_env_id()
+        if self.sym_table.id_exists_in_env(var_id.lexeme, curr_env):
+            msg = 'variable already defined in current environment'
+            self.__error(msg, var_id)
         var_decl_expr_type = self.current_type
         var_decl_expr_type_token = self.current_token
         # print(self.current_lexeme)

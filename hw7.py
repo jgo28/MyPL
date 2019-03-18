@@ -4,7 +4,7 @@
 # Assignment: 7
 # Description:
 # Simple script to execute the MyPL interpreter.
-#----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 
 import mypl_error as error
 import mypl_lexer as lexer
@@ -34,6 +34,7 @@ def hw7(file_stream):
     stmt_list.accept(the_type_checker)
     the_interpreter = interpreter.Interpreter()
     #the_interpreter.run(stmt_list)
+    stmt_list.accept(the_interpreter)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
