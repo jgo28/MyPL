@@ -122,9 +122,6 @@ class TypeChecker(ast.Visitor):
         else:   # implicit declaration
             types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
             if self.current_type not in types:  # type is a struct
-                # print(var_decl.var_id.lexeme)
-                # print(self.current_type)
-                # print(self.current_lexeme)
                 if self.sym_table.id_exists(var_decl.var_id.lexeme):    # update value if already in table
                     self.sym_table.set_info(var_decl.var_id.lexeme, self.current_lexeme)
                 else:   # add the variable to the sym table
@@ -145,8 +142,6 @@ class TypeChecker(ast.Visitor):
         rhs_type = self.current_type
         assign_stmt.lhs.accept(self)
         lhs_type = self.current_type
-        # print(lhs_type)
-        # print(rhs_type)
         if rhs_type != token.NIL and rhs_type != lhs_type:
             msg = 'mismatch type in assignment'
             self.__error(msg, assign_stmt.lhs.path[0])
@@ -163,7 +158,10 @@ class TypeChecker(ast.Visitor):
         self.sym_table.pop_environment()
 
     def visit_fun_decl_stmt(self, fun_decl):
-        return_type = fun_decl.return_type.tokentype
+        if fun_decl.return_type.tokentype == token.ID:
+            return_type = fun_decl.return_type.lexeme
+        else:
+            return_type = fun_decl.return_type.tokentype
         fun_name = fun_decl.fun_name.lexeme
         param_list = []     # list of parameters
         param_token_list = []   # list of token parameters
@@ -317,6 +315,12 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
+                    if not isinstance(object_params, dict):
+                        object_params = self.sym_table.get_info(object_params)
+                elif lexeme_list[i] not in object_params and isinstance(object_params, dict):
+                    struct_name = list(object_params.values())[0]
+                    object_params = self.sym_table.get_info(struct_name)
+                    self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                 elif lexeme_list[i] in object_params:
                     self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                     # get struct type if type is a struct
@@ -338,6 +342,8 @@ class TypeChecker(ast.Visitor):
     def visit_fun_param(self, fun_param):
         self.current_lexeme = fun_param.param_name.lexeme
         self.current_type = fun_param.param_type.tokentype
+        if self.current_type is token.ID:
+            self.current_type = fun_param.param_type.lexeme
         self.sym_table.add_id(self.current_lexeme)
         self.sym_table.set_info(self.current_lexeme, self.current_type)
 
@@ -376,19 +382,28 @@ class TypeChecker(ast.Visitor):
             self.__error('function has not been declared', self.current_token)
         fun_type = self.sym_table.get_info(fun_name)   # type of the function
         self.current_type = self.sym_table.get_info('return')
-
         if fun_type[0] == 0:    # the function takes in no parameters
             self.current_type = fun_type[1]
         else:   # function takes in parameters
             fun_type_arg_list = fun_type[0]     # obtain arg list from function
             arg_list = []
+            j = 0
+            var_lexeme = ''
             for i, arg in enumerate(call_rvalue.args):
                 arg.accept(self)
+                if j == 0:
+                    var_lexeme = self.current_lexeme
+                    # print(var_lexeme)
                 arg_list.append(self.current_type)  # add the function parameters to a list
-            self.current_type = fun_type[1]     # set output type of function
-            if fun_type_arg_list != arg_list:
-                if token.NIL not in arg_list:   # if one of the inputs is not nil throw error
-                    self.__error('parameter types do not match up with function', self.current_token)
+                j = j + 1
+            self.current_type = fun_type[-1]     # set output type of function
+            self.current_lexeme = var_lexeme
+            # print(fun_type_arg_list)
+            # print(arg_list)
+            #   need to fix bug when variable is set to a function
+            # if fun_type_arg_list != arg_list:
+            #     if token.NIL not in arg_list:   # if one of the inputs is not nil throw error
+            #         self.__error('parameter types do not match up with function', self.current_token)
 
     def visit_id_rvalue(self, id_rvalue):
         lexeme = ''
@@ -402,6 +417,7 @@ class TypeChecker(ast.Visitor):
                 # lexeme += '.'
                 lexeme = ''
         lexeme_list.append(lexeme)
+        types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
         if is_object:   # if id is an object
             object_name = None
             object_params = None
@@ -410,6 +426,12 @@ class TypeChecker(ast.Visitor):
                 if i == 0:
                     object_name = self.sym_table.get_info(lexeme_list[i])
                     object_params = self.sym_table.get_info(object_name)
+                    if not isinstance(object_params, dict):
+                        object_params = self.sym_table.get_info(object_params)
+                elif lexeme_list[i] not in object_params and isinstance(object_params, dict):
+                    struct_name = list(object_params.values())[0]
+                    object_params = self.sym_table.get_info(struct_name)
+                    self.current_type = object_params.get(lexeme_list[i])  # check if types are valid
                 elif lexeme_list[i] in object_params:
                     self.current_type = object_params.get(lexeme_list[i])   # check if types are valid
                 else:
@@ -417,12 +439,8 @@ class TypeChecker(ast.Visitor):
                 i = i + 1
 
         else:   # if id is not an object
-            types = [token.STRINGTYPE, token.INTTYPE, token.BOOLTYPE, token.FLOATTYPE, token.ID, token.NIL]
             if self.sym_table.id_exists(lexeme):
                 self.current_type = self.sym_table.get_info(lexeme)
-                if self.current_type not in types and self.sym_table.id_exists(self.current_type):
-                    struct_name = self.sym_table.get_info(self.current_type)
-                    self.current_type = struct_name
                 self.current_lexeme = lexeme
             else:
                 self.__error('value has not been declared', self.current_token)
