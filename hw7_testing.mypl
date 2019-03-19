@@ -1,80 +1,39 @@
-#-----------------------------------
-# binary search tree implementation
-#-----------------------------------
+# simple linked list
 
-# tree node that holds an int value
 struct Node
-    var value = 0;
-    var left: Node = nil;
-    var right: Node = nil;
+    var val = 0;
+    var next: Node = nil;
 end
 
-# create a new tree
-fun Node make_tree(val: int)
-    var n = new Node;
-    set n.value = val;
-    return n;
+# list: [10,20,30]
+
+var head = new Node;
+set head.val = 10;
+
+var len = 6;
+var i = 1;
+var ptr = head;
+
+while i < len do
+    set ptr.val = i * 10;
+    set ptr.next = new Node;
+    set ptr = ptr.next;
+    set i = i + 1;
+    #print(itos(i) + "\n");
+    #print(itos(ptr.val) + "\n");
 end
 
-# insert a value into the given tree
-fun nil insert(tree: Node, val: int)
-    if tree == nil then
-        return;
+print("[");
+set i = 1;
+set ptr = head;
+while i < len do
+    print(itos(ptr.val));
+    if i < (len - 1) then
+        print(", ");
     end
-    if val <= tree.value then
-        if tree.left == nil then
-            set tree.left = new Node;
-            set tree.left.value = val;
-        else
-            insert(tree.left, val);
-        end
-    else
-        if tree.right == nil then
-            set tree.right = new Node;
-            set tree.right.value = val;
-        else
-            insert(tree.right, val);
-        end
-    end
+    set ptr = ptr.next;
+    set i = i + 1;
 end
+print("]\n");
 
-# print out the tree in sorted order
-fun nil print_tree(tree: Node)
-    if tree != nil then
-        print_tree(tree.left);
-        print(" " + itos(tree.value));
-        print_tree(tree.right);
-    end
-end
-
-# get the height of the tree
-fun int height(tree: Node)
-    if tree == nil then
-        return 0;
-    else
-        var lh = height(tree.left);
-        var rh = height(tree.right);
-        if lh >= rh then
-            return 1 + lh;
-        else
-            return 1 + rh;
-        end
-    end
-end
-
-
-# example tree
-var tree = make_tree(10);
-insert(tree, 5);
-insert(tree, 15);
-insert(tree, 2);
-insert(tree, 12);
-insert(tree, 7);
-insert(tree, 1);
-insert(tree, 13);
-insert(tree, 14);
-print("Tree Values:");
-print_tree(tree);
-print("\n");
-print("Tree Height: " + itos(height(tree)) + "\n");
 
