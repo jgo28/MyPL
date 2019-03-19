@@ -105,8 +105,8 @@ class Interpreter(ast.Visitor):
         env_id = self.sym_table.get_env_id()
         self.sym_table.add_id(struct_lexeme)
         self.sym_table.set_info(struct_lexeme, [env_id, struct_decl])
-        for var_decl in struct_decl.var_decls:
-            var_decl.accept(self)
+        # for var_decl in struct_decl.var_decls:
+        #     var_decl.accept(self)
 
     #
     # def visit_fun_decl_stmt(self, fun_decl):
@@ -257,6 +257,7 @@ class Interpreter(ast.Visitor):
             if i != len(lval.path) - 1:
                 lexeme += '.'
         self.current_value = lexeme
+
     #
     # def visit_fun_param(self, fun_param):
     #     self.__write(fun_param.param_name.lexeme)
@@ -280,19 +281,20 @@ class Interpreter(ast.Visitor):
 
     def visit_new_rvalue(self, new_rvalue):
         struct_info = self.sym_table.get_info(new_rvalue.struct_type.lexeme)
+        for var_decl in struct_info[1].var_decls:
+            var_decl.accept(self)
         # save current environment, go to struct def's environment
         curr_env = self.sym_table.get_env_id()
         self.sym_table.set_env_id(struct_info[0])
         # create empty struct, initialize vars, reset environment
         struct_obj = {}
         self.sym_table.push_environment()
-        # initialize struct_obj w/ vars in struct_info[1]
-        for v in struct_info[1].var_decls:
-            struct_obj[v.var_id.lexeme] = self.sym_table.get_env_id()
+        for var_decl in struct_info[1].var_decls:  # initialize struct_obj w/ vars in struct_info[1]
+            struct_obj[var_decl.var_id.lexeme] = self.sym_table.get_env_id()
         self.sym_table.pop_environment()
         self.sym_table.set_env_id(curr_env)     # return to starting environment
-        oid = id(struct_obj)
-        self.heap[oid] = struct_obj     # create oid, add struct_obj to the heap, assign current value
+        oid = id(struct_obj)    # create oid, add struct_obj to the heap, assign current value
+        self.heap[oid] = struct_obj
         self.current_value = oid
 
     def visit_call_rvalue(self, call_rvalue):
@@ -311,6 +313,5 @@ class Interpreter(ast.Visitor):
         var_name = id_rvalue.path[0].lexeme
         var_val = self.sym_table.get_info(var_name)
         for path_id in id_rvalue.path[1:]:
-            var_val = self.sym_table.get_info(path_id.lexeme)
-            # ...handle path expressions...
+            var_val = self.sym_table.get_info(path_id.lexeme)   # handle path expressions
         self.current_value = var_val
