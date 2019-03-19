@@ -251,12 +251,20 @@ class Interpreter(ast.Visitor):
                 self.current_value = True
 
     def visit_lvalue(self, lval):
-        lexeme = ''
-        for i, path_id in enumerate(lval.path):
-            lexeme += path_id.lexeme
-            if i != len(lval.path) - 1:
-                lexeme += '.'
-        self.current_value = lexeme
+        # lexeme = ''
+        # for i, path_id in enumerate(lval.path):
+        #     lexeme += path_id.lexeme
+        #     if i != len(lval.path) - 1:
+        #         lexeme += '.'
+        # self.current_value = lexeme
+        identifier = lval.path[0].lexeme
+        if len(lval.path) == 1:
+            self.sym_table.set_info(identifier, self.current_value)
+        else:
+            for path_id in lval.path[1:]:
+                identifier = path_id.lexeme  # handle path expressions
+            self.sym_table.set_info(identifier, self.current_value)
+        self.current_value = identifier
 
     #
     # def visit_fun_param(self, fun_param):
