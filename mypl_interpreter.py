@@ -100,16 +100,13 @@ class Interpreter(ast.Visitor):
         rhs_value = self.current_value
         self.sym_table.set_info(lhs_value, rhs_value)
 
-
     def visit_struct_decl_stmt(self, struct_decl):
         struct_lexeme = struct_decl.struct_id.lexeme
         env_id = self.sym_table.get_env_id()
         self.sym_table.add_id(struct_lexeme)
         self.sym_table.set_info(struct_lexeme, [env_id, struct_decl])
-        self.sym_table.push_environment()
         for var_decl in struct_decl.var_decls:
             var_decl.accept(self)
-        self.sym_table.pop_environment()
 
     #
     # def visit_fun_decl_stmt(self, fun_decl):
@@ -313,6 +310,7 @@ class Interpreter(ast.Visitor):
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
         var_val = self.sym_table.get_info(var_name)
-        # for path_id in id_rvalue.path[1:]:
-        #     # ...handle path expressions...
+        for path_id in id_rvalue.path[1:]:
+            var_val = self.sym_table.get_info(path_id.lexeme)
+            # ...handle path expressions...
         self.current_value = var_val
