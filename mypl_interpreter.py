@@ -12,6 +12,10 @@ import mypl_ast as ast
 import mypl_error as error
 import mypl_symbol_table as sym_tbl
 
+
+class ReturnException(Exception): pass
+
+
 class Interpreter(ast.Visitor):
     """A MyPL interpreter visitor implementation"""
 
@@ -96,15 +100,14 @@ class Interpreter(ast.Visitor):
         rhs_value = self.current_value
         self.sym_table.set_info(lhs_value, rhs_value)
 
-    #
-    # def visit_struct_decl_stmt(self, struct_decl):
-    #     self.__write('\nstruct')
-    #     self.__write(' ' + struct_decl.struct_id.lexeme + '\n')
-    #     self.indent += 1
-    #     for var_decl in struct_decl.var_decls:
-    #         var_decl.accept(self)
-    #     self.indent -= 1
-    #     self.__write('end\n\n')
+    def visit_struct_decl_stmt(self, struct_decl):
+        struct_lexeme = struct_decl.struct_id.lexeme
+        env_id = self.sym_table.get_env_id()
+        self.sym_table.add_id(struct_lexeme)
+        self.sym_table.set_info(struct_lexeme, [env_id, struct_decl])
+        # for var_decl in struct_decl.var_decls:
+        #     var_decl.accept(self)
+
     #
     # def visit_fun_decl_stmt(self, fun_decl):
     #     self.__write('\nfun ')
@@ -248,12 +251,21 @@ class Interpreter(ast.Visitor):
                 self.current_value = True
 
     def visit_lvalue(self, lval):
-        lexeme = ''
-        for i, path_id in enumerate(lval.path):
-            lexeme += path_id.lexeme
-            if i != len(lval.path) - 1:
-                lexeme += '.'
-        self.current_value = lexeme
+        # lexeme = ''
+        # for i, path_id in enumerate(lval.path):
+        #     lexeme += path_id.lexeme
+        #     if i != len(lval.path) - 1:
+        #         lexeme += '.'
+        # self.current_value = lexeme
+        identifier = lval.path[0].lexeme
+        if len(lval.path) == 1:
+            self.sym_table.set_info(identifier, self.current_value)
+        else:
+            for path_id in lval.path[1:]:
+                identifier = path_id.lexeme  # handle path expressions
+            self.sym_table.set_info(identifier, self.current_value)
+        self.current_value = identifier
+
     #
     # def visit_fun_param(self, fun_param):
     #     self.__write(fun_param.param_name.lexeme)
@@ -275,9 +287,23 @@ class Interpreter(ast.Visitor):
         elif simple_rvalue.val.tokentype == token.NIL:
             self.current_value = None
 
-    # def visit_new_rvalue(self, new_rvalue):
-    #     self.__write('new ')
-    #     self.__write(new_rvalue.struct_type.lexeme)
+    def visit_new_rvalue(self, new_rvalue):
+        struct_info = self.sym_table.get_info(new_rvalue.struct_type.lexeme)
+        for var_decl in struct_info[1].var_decls:
+            var_decl.accept(self)
+        # save current environment, go to struct def's environment
+        curr_env = self.sym_table.get_env_id()
+        self.sym_table.set_env_id(struct_info[0])
+        # create empty struct, initialize vars, reset environment
+        struct_obj = {}
+        self.sym_table.push_environment()
+        for var_decl in struct_info[1].var_decls:  # initialize struct_obj w/ vars in struct_info[1]
+            struct_obj[var_decl.var_id.lexeme] = self.sym_table.get_env_id()
+        self.sym_table.pop_environment()
+        self.sym_table.set_env_id(curr_env)     # return to starting environment
+        oid = id(struct_obj)    # create oid, add struct_obj to the heap, assign current value
+        self.heap[oid] = struct_obj
+        self.current_value = oid
 
     def visit_call_rvalue(self, call_rvalue):
         # handle built in functions first
@@ -294,6 +320,6 @@ class Interpreter(ast.Visitor):
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
         var_val = self.sym_table.get_info(var_name)
-        # for path_id in id_rvalue.path[1:]:
-        #     # ...handle path expressions...
+        for path_id in id_rvalue.path[1:]:
+            var_val = self.sym_table.get_info(path_id.lexeme)   # handle path expressions
         self.current_value = var_val
