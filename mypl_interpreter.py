@@ -228,7 +228,7 @@ class Interpreter(ast.Visitor):
                 if first_expr >= second_expr:
                     self.current_value = True
                 else:
-                    self.current_value = False  #
+                    self.current_value = False
 
         if bool_expr.bool_connector is not None:    # AND, OR connectors
             first_rest_val = self.current_value
@@ -252,6 +252,7 @@ class Interpreter(ast.Visitor):
 
     def visit_lvalue(self, lval):
         identifier = lval.path[0].lexeme
+        self.current_value = self.sym_table.get_info(identifier)
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
