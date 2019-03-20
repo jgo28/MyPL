@@ -258,6 +258,9 @@ class Interpreter(ast.Visitor):
         else:
             for path_id in lval.path[1:]:
                 identifier = path_id.lexeme  # handle path expressions
+            struct_obj = self.heap[self.current_value]
+            struct_obj[identifier] = self.sym_table.get_info(identifier)
+            print(struct_obj)
             self.sym_table.set_info(identifier, self.current_value)
         self.current_value = identifier
 
@@ -293,7 +296,8 @@ class Interpreter(ast.Visitor):
         struct_obj = {}
         self.sym_table.push_environment()
         for var_decl in struct_info[1].var_decls:  # initialize struct_obj w/ vars in struct_info[1]
-            struct_obj[var_decl.var_id.lexeme] = self.sym_table.get_env_id()
+            var_decl.accept(self)
+            struct_obj[var_decl.var_id.lexeme] = self.current_value
         self.sym_table.pop_environment()
         self.sym_table.set_env_id(curr_env)     # return to starting environment
         oid = id(struct_obj)    # create oid, add struct_obj to the heap, assign current value
