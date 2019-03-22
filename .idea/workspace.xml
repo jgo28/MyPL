@@ -25,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
+            <state relative-caret-position="188">
+              <caret line="133" column="48" selection-start-line="133" selection-start-column="48" selection-end-line="133" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -38,7 +38,11 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -266,11 +270,18 @@
       <option name="project" value="LOCAL" />
       <updated>1553294202628</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="t3 works">
+      <created>1553298244500</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1553298244500</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="747" extended-state="0" />
+    <frame x="0" y="23" width="1280" height="747" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
@@ -299,7 +310,8 @@
     <MESSAGE value="test case 1 functional" />
     <MESSAGE value="it doesnt work" />
     <MESSAGE value="working on t3" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on t3" />
+    <MESSAGE value="t3 works" />
+    <option name="LAST_COMMIT_MESSAGE" value="t3 works" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/mypl_ast.py">
@@ -373,9 +385,6 @@
     <entry file="file://$PROJECT_DIR$/hw7_t4.mypl">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/hw7.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -383,10 +392,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
+        <state relative-caret-position="188">
+          <caret line="133" column="48" selection-start-line="133" selection-start-column="48" selection-end-line="133" selection-end-column="48" />
         </state>
       </provider>
     </entry>

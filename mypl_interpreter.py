@@ -132,9 +132,7 @@ class Interpreter(ast.Visitor):
         # set current_value to return expression
         if return_stmt.return_expr is not None:
             return_stmt.return_expr.accept(self)
-        print(self.current_value)
         raise ReturnException()
-        # self.__write(self.__indent() + 'return')
 
     def visit_while_stmt(self, while_stmt):
         while_stmt.bool_expr.accept(self)
