@@ -108,8 +108,10 @@ class Interpreter(ast.Visitor):
         # for var_decl in struct_decl.var_decls:
         #     var_decl.accept(self)
 
-    #
     # def visit_fun_decl_stmt(self, fun_decl):
+    #     curr_env = self.sym_table.get_env_id()
+    #     self.sym_table.add_id(fun_decl.fun_name.lexeme)
+    #     self.sym_table.set_info(fun_decl.fun_name.lexeme, [curr_env, fun_decl])
     #     self.__write('\nfun ')
     #     self.__write(fun_decl.return_type.lexeme)
     #     self.__write(' ')
@@ -134,14 +136,21 @@ class Interpreter(ast.Visitor):
     #
 
     def visit_while_stmt(self, while_stmt):
+        prev_curr_val = self.current_value
         while_stmt.bool_expr.accept(self)
-        self.sym_table.push_environment()
-        cond_bool = self.current_value
-        while cond_bool:   # loop while condition is true
+        if self.current_value:
+            self.current_value = prev_curr_val
             while_stmt.stmt_list.accept(self)
-            while_stmt.bool_expr.accept(self)   # check if boolean expression of parameter is still true
-            cond_bool = self.current_value
-        self.sym_table.pop_environment()
+            while_stmt.accept(self)
+    # def visit_while_stmt(self, while_stmt):
+    #     while_stmt.bool_expr.accept(self)
+    #     self.sym_table.push_environment()
+    #     cond_bool = self.current_value
+    #     while cond_bool:   # loop while condition is true
+    #         while_stmt.stmt_list.accept(self)
+    #         while_stmt.bool_expr.accept(self)   # check if boolean expression of parameter is still true
+    #         cond_bool = self.current_value
+    #     self.sym_table.pop_environment()
 
     def visit_if_stmt(self, if_stmt):
         condition_met = False   # keeps track if the boolean condition is met in one of the if statements
@@ -252,25 +261,25 @@ class Interpreter(ast.Visitor):
 
     def visit_lvalue(self, lval):
         identifier = lval.path[0].lexeme
-        self.current_value = self.sym_table.get_info(identifier)
+        #self.current_value = self.sym_table.get_info(identifier)
+        #print(self.current_value)
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
             for path_id in lval.path[1:]:
                 identifier = path_id.lexeme  # handle path expressions
-            oid = self.current_value
-            struct_obj = self.heap[oid]
-            struct_obj[identifier] = self.sym_table.get_info(identifier)
-            self.heap[oid] = struct_obj
-            #self.sym_table.set_info(identifier, self.current_value)
+            if self.current_value in self.heap:
+                oid = self.current_value
+                struct_obj = self.heap[oid]
+                struct_obj[identifier] = self.sym_table.get_info(identifier)
+                self.heap[oid] = struct_obj
+                self.sym_table.set_info(identifier, struct_obj[identifier])
         self.current_value = identifier
 
-    #
     # def visit_fun_param(self, fun_param):
-    #     self.__write(fun_param.param_name.lexeme)
-    #     self.__write(': ')
-    #     self.__write(fun_param.param_type.lexeme)
-    #
+    #     curr_env = self.sym_table.get_env_id()
+    #     self.sym_table.add_id(fun_param.param_name.lexeme)
+    #     self.sym_table.set_info(fun_param.param_name.lexeme, [curr_env, fun_param])
 
     def visit_simple_rvalue(self, simple_rvalue):
         if simple_rvalue.val.tokentype == token.INTVAL:
@@ -297,7 +306,7 @@ class Interpreter(ast.Visitor):
         struct_obj = {}
         self.sym_table.push_environment()
         for var_decl in struct_info[1].var_decls:  # initialize struct_obj w/ vars in struct_info[1]
-            #var_decl.accept(self)
+            var_decl.accept(self)
             struct_obj[var_decl.var_id.lexeme] = self.current_value
         self.sym_table.pop_environment()
         self.sym_table.set_env_id(curr_env)     # return to starting environment
@@ -322,5 +331,5 @@ class Interpreter(ast.Visitor):
         var_val = self.sym_table.get_info(var_name)
         for path_id in id_rvalue.path[1:]:
             var_val = self.sym_table.get_info(path_id.lexeme)   # handle path expressions
+            var_name = path_id.lexeme
         self.current_value = var_val
-        #print(self.current_value)
