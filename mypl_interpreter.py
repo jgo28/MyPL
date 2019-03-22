@@ -125,19 +125,16 @@ class Interpreter(ast.Visitor):
         cur_env = self.sym_table.get_env_id()
         self.sym_table.add_id(fun_decl.fun_name.lexeme)
         self.sym_table.set_info(fun_decl.fun_name.lexeme, [cur_env, fun_decl])
-
         # fun_decl.stmt_list.accept(self)
 
 
     def visit_return_stmt(self, return_stmt):
         # set current_value to return expression
+        if return_stmt.return_expr is not None:
+            return_stmt.return_expr.accept(self)
         self.current_value = return_stmt.return_expr
         raise ReturnException()
         # self.__write(self.__indent() + 'return')
-        # if return_stmt.return_expr is not None:
-        #     self.__write(' ')
-        #     return_stmt.return_expr.accept(self)
-        # self.__write(';\n')
 
 
     def visit_while_stmt(self, while_stmt):
@@ -324,7 +321,8 @@ class Interpreter(ast.Visitor):
             self.sym_table.push_environment()   # add new environment
             i = 0
             while i < len(arg_values):     # initialise parameters with arg values
-                self.sym_table.add_id(fun_info[1].params[i])
+                if not self.sym_table.id_exists(fun_info[1].params[i]):
+                    self.sym_table.add_id(fun_info[1].params[i])
                 self.sym_table.set_info(fun_info[1].params[i], arg_values[i])
                 i = i + 1
             # visit function's statement list
