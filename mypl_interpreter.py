@@ -108,22 +108,16 @@ class Interpreter(ast.Visitor):
         # for var_decl in struct_decl.var_decls:
         #     var_decl.accept(self)
 
-    #
-    # def visit_fun_decl_stmt(self, fun_decl):
-    #     self.__write('\nfun ')
-    #     self.__write(fun_decl.return_type.lexeme)
-    #     self.__write(' ')
-    #     self.__write(fun_decl.fun_name.lexeme)
-    #     self.__write('(')
-    #     for i, param in enumerate(fun_decl.params):
-    #         param.accept(self)
-    #         if i != len(fun_decl.params) - 1:
-    #             self.__write(', ')
-    #     self.__write(')\n')
-    #     self.indent += 1
-    #     fun_decl.stmt_list.accept(self)
-    #     self.indent -= 1
-    #     self.__write('end\n\n')
+    def visit_fun_decl_stmt(self, fun_decl):
+        # record AST node and store current environment id
+        cur_env = self.sym_table.get_env_id()
+        self.sym_table.add_id(fun_decl.fun_name.lexeme)
+        self.sym_table.set_info(fun_decl.fun_name.lexeme, [cur_env, fun_decl])
+
+        # for i, param in enumerate(fun_decl.params):
+        #     param.accept(self)
+        # fun_decl.stmt_list.accept(self)
+
     #
     # def visit_return_stmt(self, return_stmt):
     #     self.__write(self.__indent() + 'return')
@@ -310,12 +304,19 @@ class Interpreter(ast.Visitor):
         built_ins = ['print', 'length', 'get', 'readi', 'reads', 'readf', 'itof', 'itos', 'ftos', 'stoi', 'stof']
         if call_rvalue.fun.lexeme in built_ins:
             self.__built_in_fun_helper(call_rvalue)
-        # else:
-        # for i, arg in enumerate(call_rvalue.args):
-        #     arg.accept(self)
-        #     if i != len(call_rvalue.args) - 1:
-        #         self.__write(', ')
-        # self.__write(')')
+        else:
+            fun_info = self.sym_table.get_info(call_rvalue.fun.lexeme)     # get function information
+            cur_env = self.sym_table.get_env_id()   # store current environment
+            for i, arg in enumerate(call_rvalue.args):  # compute and store arg values
+                arg.accept(self)
+                print(self.current_value)
+            self.sym_table.set_env_id(fun_info[0])  # go to function decl environment id
+            self.sym_table.push_environment()   # add new environment
+            # initialize parameters with arg values
+
+            #     if i != len(call_rvalue.args) - 1:
+            #         self.__write(', ')
+            # self.__write(')')
 
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
