@@ -136,12 +136,13 @@ class Interpreter(ast.Visitor):
     #
 
     def visit_while_stmt(self, while_stmt):
-        prev_curr_val = self.current_value
+        #prev_curr_val = self.current_value
         while_stmt.bool_expr.accept(self)
         if self.current_value:
-            self.current_value = prev_curr_val
+            #self.current_value = prev_curr_val
             while_stmt.stmt_list.accept(self)
             while_stmt.accept(self)
+
     # def visit_while_stmt(self, while_stmt):
     #     while_stmt.bool_expr.accept(self)
     #     self.sym_table.push_environment()
