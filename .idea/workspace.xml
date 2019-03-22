@@ -16,7 +16,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hw7.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
+            <state relative-caret-position="405">
               <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
             </state>
           </provider>
@@ -25,15 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="323" column="71" selection-start-line="323" selection-start-column="71" selection-end-line="323" selection-end-column="71" />
-              <folding>
-                <element signature="e#909#2808#0" />
-                <element signature="e#4846#5253#0" />
-                <element signature="e#5301#6313#0" />
-                <element signature="e#6456#7319#0" />
-                <element signature="e#7371#10128#0" />
-              </folding>
+            <state relative-caret-position="203">
+              <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -100,9 +93,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="68" />
-    <option name="y" value="23" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-2" />
+    <option name="y" value="53" />
     <option name="width" value="1280" />
     <option name="height" value="747" />
   </component>
@@ -280,7 +273,7 @@
     <frame x="0" y="23" width="1280" height="747" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -291,7 +284,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32977098" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32977098" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -355,18 +348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7_t2.mypl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
+        <state relative-caret-position="17">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -380,9 +363,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7_t4.mypl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/mypl_symbol_table.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="14">
@@ -390,17 +370,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hw7_t4.mypl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="323" column="71" selection-start-line="323" selection-start-column="71" selection-end-line="323" selection-end-column="71" />
-          <folding>
-            <element signature="e#909#2808#0" />
-            <element signature="e#4846#5253#0" />
-            <element signature="e#5301#6313#0" />
-            <element signature="e#6456#7319#0" />
-            <element signature="e#7371#10128#0" />
-          </folding>
+        <state relative-caret-position="203">
+          <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
         </state>
       </provider>
     </entry>
