@@ -33,8 +33,8 @@ def hw7(file_stream):
     the_type_checker = type_checker.TypeChecker()
     stmt_list.accept(the_type_checker)
     the_interpreter = interpreter.Interpreter()
-    #the_interpreter.run(stmt_list)
-    stmt_list.accept(the_interpreter)
+    the_interpreter.run(stmt_list)
+    #stmt_list.accept(the_interpreter)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

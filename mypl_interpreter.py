@@ -27,6 +27,13 @@ class Interpreter(ast.Visitor):
         # the heap {oid:struct_obj}
         self.heap = {}
 
+    #   starts the interpreter
+    def run(self, stmt_list):
+        try:
+            stmt_list.accept(self)
+        except ReturnException:
+            pass
+
     def __error(self, msg, the_token):
         raise error.MyPLError(msg, the_token.line, the_token.column)
 
@@ -110,22 +117,28 @@ class Interpreter(ast.Visitor):
 
     def visit_fun_decl_stmt(self, fun_decl):
         # record AST node and store current environment id
+        params = []
+        for i, param in enumerate(fun_decl.params):
+            param.accept(self)
+            params.append(self.current_value)
+        fun_decl.params = params
         cur_env = self.sym_table.get_env_id()
         self.sym_table.add_id(fun_decl.fun_name.lexeme)
         self.sym_table.set_info(fun_decl.fun_name.lexeme, [cur_env, fun_decl])
 
-        # for i, param in enumerate(fun_decl.params):
-        #     param.accept(self)
         # fun_decl.stmt_list.accept(self)
 
-    #
-    # def visit_return_stmt(self, return_stmt):
-    #     self.__write(self.__indent() + 'return')
-    #     if return_stmt.return_expr is not None:
-    #         self.__write(' ')
-    #         return_stmt.return_expr.accept(self)
-    #     self.__write(';\n')
-    #
+
+    def visit_return_stmt(self, return_stmt):
+        # set current_value to return expression
+        self.current_value = return_stmt.return_expr
+        raise ReturnException()
+        # self.__write(self.__indent() + 'return')
+        # if return_stmt.return_expr is not None:
+        #     self.__write(' ')
+        #     return_stmt.return_expr.accept(self)
+        # self.__write(';\n')
+
 
     def visit_while_stmt(self, while_stmt):
         while_stmt.bool_expr.accept(self)
@@ -259,12 +272,8 @@ class Interpreter(ast.Visitor):
             #self.sym_table.set_info(identifier, self.current_value)
         self.current_value = identifier
 
-    #
-    # def visit_fun_param(self, fun_param):
-    #     self.__write(fun_param.param_name.lexeme)
-    #     self.__write(': ')
-    #     self.__write(fun_param.param_type.lexeme)
-    #
+    def visit_fun_param(self, fun_param):
+        self.current_value = fun_param.param_name.lexeme
 
     def visit_simple_rvalue(self, simple_rvalue):
         if simple_rvalue.val.tokentype == token.INTVAL:
@@ -307,16 +316,25 @@ class Interpreter(ast.Visitor):
         else:
             fun_info = self.sym_table.get_info(call_rvalue.fun.lexeme)     # get function information
             cur_env = self.sym_table.get_env_id()   # store current environment
+            arg_values = []
             for i, arg in enumerate(call_rvalue.args):  # compute and store arg values
                 arg.accept(self)
-                print(self.current_value)
+                arg_values.append(self.current_value)
             self.sym_table.set_env_id(fun_info[0])  # go to function decl environment id
             self.sym_table.push_environment()   # add new environment
-            # initialize parameters with arg values
+            i = 0
+            while i < len(arg_values):     # initialise parameters with arg values
+                self.sym_table.add_id(fun_info[1].params[i])
+                self.sym_table.set_info(fun_info[1].params[i], arg_values[i])
+                i = i + 1
+            # visit function's statement list
+            try:
+                fun_info[1].stmt_list.accept(self)
+            except ReturnException:
+                pass
+            self.sym_table.pop_environment()    # remove new environment
+            self.sym_table.set_env_id(cur_env)  # return to caller's environment
 
-            #     if i != len(call_rvalue.args) - 1:
-            #         self.__write(', ')
-            # self.__write(')')
 
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
