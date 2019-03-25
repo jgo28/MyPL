@@ -127,7 +127,6 @@ class Interpreter(ast.Visitor):
         self.sym_table.set_info(fun_decl.fun_name.lexeme, [cur_env, fun_decl])
         # fun_decl.stmt_list.accept(self)
 
-
     def visit_return_stmt(self, return_stmt):
         # set current_value to return expression
         if return_stmt.return_expr is not None:
@@ -294,7 +293,6 @@ class Interpreter(ast.Visitor):
         struct_obj = {}
         self.sym_table.push_environment()
         for var_decl in struct_info[1].var_decls:  # initialize struct_obj w/ vars in struct_info[1]
-            #var_decl.accept(self)
             struct_obj[var_decl.var_id.lexeme] = self.current_value
         self.sym_table.pop_environment()
         self.sym_table.set_env_id(curr_env)     # return to starting environment
@@ -329,7 +327,6 @@ class Interpreter(ast.Visitor):
                 pass
             self.sym_table.pop_environment()    # remove new environment
             self.sym_table.set_env_id(cur_env)  # return to caller's environment
-
 
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
