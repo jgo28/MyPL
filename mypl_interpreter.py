@@ -94,10 +94,10 @@ class Interpreter(ast.Visitor):
         self.sym_table.set_info(var_name, exp_value)
 
     def visit_assign_stmt(self, assign_stmt):
-        assign_stmt.lhs.accept(self)
-        lhs_value = self.current_value
         assign_stmt.rhs.accept(self)
         rhs_value = self.current_value
+        assign_stmt.lhs.accept(self)
+        lhs_value = self.current_value
         self.sym_table.set_info(lhs_value, rhs_value)
 
     def visit_struct_decl_stmt(self, struct_decl):
@@ -262,7 +262,6 @@ class Interpreter(ast.Visitor):
 
     def visit_lvalue(self, lval):
         identifier = lval.path[0].lexeme
-        #self.current_value = self.sym_table.get_info(identifier)
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
@@ -271,22 +270,24 @@ class Interpreter(ast.Visitor):
             while i < len(lval.path):
                 lval_list.append(lval.path[i].lexeme)
                 i += 1
-            print(lval_list)
+            #print(lval_list)
             i = 0
             while i < len(lval_list):
-                print(lval_list[i])
+                #print(lval_list[i])
                 self.current_value = self.sym_table.get_info(lval_list[i])
                 if i == len(lval_list) - 1:
                     identifier = lval_list[i]
-                    print(identifier)
+                    #print(identifier)
                 if self.current_value in self.heap:
                     oid = self.current_value
                     struct_obj = self.heap[oid]
                     struct_obj[identifier] = self.sym_table.get_info(identifier)
                     self.heap[oid] = struct_obj
                     self.sym_table.set_info(identifier, struct_obj[identifier])
+                    self.current_value = struct_obj[identifier]
                 i += 1
-        self.current_value = identifier
+            print(self.current_value)
+            #self.current_value = identifier
 
     # def visit_fun_param(self, fun_param):
     #     curr_env = self.sym_table.get_env_id()
