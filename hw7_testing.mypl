@@ -28,37 +28,6 @@ fun nil insert(tree: Node, val: int)
         else
             insert(tree.left, val);
         end
-    else
-        if tree.right == nil then
-            set tree.right = new Node;
-            set tree.right.value = val;
-        else
-            insert(tree.right, val);
-        end
-    end
-end
-
-# print out the tree in sorted order
-fun nil print_tree(tree: Node)
-    if tree != nil then
-        print_tree(tree.left);
-        print(" " + itos(tree.value));
-        print_tree(tree.right);
-    end
-end
-
-# get the height of the tree
-fun int height(tree: Node)
-    if tree == nil then
-        return 0;
-    else
-        var lh = height(tree.left);
-        var rh = height(tree.right);
-        if lh >= rh then
-            return 1 + lh;
-        else
-            return 1 + rh;
-        end
     end
 end
 
