@@ -263,7 +263,6 @@ class Interpreter(ast.Visitor):
     def visit_lvalue(self, lval):
         identifier = lval.path[0].lexeme
         #self.current_value = self.sym_table.get_info(identifier)
-        #print(self.current_value)
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
@@ -287,12 +286,6 @@ class Interpreter(ast.Visitor):
                     self.heap[oid] = struct_obj
                     self.sym_table.set_info(identifier, struct_obj[identifier])
                 i += 1
-            # if self.current_value in self.heap:
-            #     oid = self.current_value
-            #     struct_obj = self.heap[oid]
-            #     struct_obj[identifier] = self.sym_table.get_info(identifier)
-            #     self.heap[oid] = struct_obj
-            #     self.sym_table.set_info(identifier, struct_obj[identifier])
         self.current_value = identifier
 
     # def visit_fun_param(self, fun_param):
