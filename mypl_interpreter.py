@@ -265,25 +265,16 @@ class Interpreter(ast.Visitor):
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
-            global prev_val, prev_id
-            for path_id in lval.path[1:]:
+            struct_obj = {}     # helper variable for the heap
+            for path_id in lval.path[0:]:
                 identifier = path_id.lexeme  # handle path expressions
-            self.sym_table.set_info(identifier, self.current_value)
-            #print(self.heap)
-            if self.current_value in self.heap:
-                oid = self.current_value
-                struct_obj = self.heap[oid]
-                struct_obj[prev_id] = prev_val
-                struct_obj[identifier] = self.sym_table.get_info(identifier)
-                print(self.heap)
-            else:
-                self.sym_table.set_info(identifier, self.current_value)
-                prev_val = self.current_value
-                prev_id = identifier
-                # print(identifier)
-                # print(self.sym_table.get_info('val'))
-                # print(self.current_value)
-                # print(self.sym_table.get_info(identifier))
+                if path_id == lval.path[0]:
+                    struct_obj = self.heap[self.sym_table.get_info(identifier)]
+                elif path_id == lval.path[-1]:
+                    oid = self.current_value
+                    struct_obj[identifier] = oid
+                else:
+                    struct_obj = self.heap[struct_obj[identifier]]
 
     # def visit_fun_param(self, fun_param):
     #     curr_env = self.sym_table.get_env_id()
@@ -338,7 +329,14 @@ class Interpreter(ast.Visitor):
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
         var_val = self.sym_table.get_info(var_name)
-        for path_id in id_rvalue.path[1:]:
-            var_val = self.sym_table.get_info(path_id.lexeme)   # handle path expressions
-            var_name = path_id.lexeme
+        struct_obj = {}  # helper variable to manage heaps
         self.current_value = var_val
+        for path_id in id_rvalue.path[0:]:  # handle path expressions
+            if len(id_rvalue.path) > 1:
+                identifier = path_id.lexeme
+                if path_id == id_rvalue.path[0]:    # first variable in path
+                    struct_obj = self.heap[self.sym_table.get_info(identifier)]
+                elif path_id == id_rvalue.path[-1]:     # last variable in path
+                    self.current_value = struct_obj[identifier]
+                else:   # path between first and last element
+                    struct_obj = self.heap[struct_obj[identifier]]
