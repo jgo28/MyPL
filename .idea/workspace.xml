@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2252b4d-985c-4b32-964b-85d558eecd2c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mypl_interpreter.py" beforeDir="false" afterPath="$PROJECT_DIR$/mypl_interpreter.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="317" column="44" selection-start-line="317" selection-start-column="44" selection-end-line="317" selection-end-column="44" />
+            <state relative-caret-position="262">
+              <caret line="322" column="52" selection-start-line="322" selection-start-column="52" selection-end-line="322" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -331,14 +330,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553573626894</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="testing t6">
+      <created>1553574349096</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1553574349096</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="239" y="23" width="1280" height="747" extended-state="0" />
+    <frame x="45" y="23" width="1280" height="747" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2494043" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -349,7 +355,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32977098" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32977098" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32977098" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -398,22 +404,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hw7_t2.mypl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7_t4.mypl">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -455,10 +451,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hw7_t4.mypl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7_t3.mypl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mypl_interpreter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="317" column="44" selection-start-line="317" selection-start-column="44" selection-end-line="317" selection-end-column="44" />
+        <state relative-caret-position="262">
+          <caret line="322" column="52" selection-start-line="322" selection-start-column="52" selection-end-line="322" selection-end-column="52" />
         </state>
       </provider>
     </entry>

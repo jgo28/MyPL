@@ -317,11 +317,10 @@ class Interpreter(ast.Visitor):
                 call_rvalue.args[i].accept(self)
                 arg_values[fun_info[1].params[i]] = self.current_value
             print(arg_values)
+            self.sym_table.push_environment()   # add new environment
             for name, value in arg_values.items():
                 self.sym_table.add_id(name)
                 self.sym_table.set_info(name, value)
-            self.sym_table.push_environment()   # add new environment
-
             # visit function's statement list
             try:
                 fun_info[1].stmt_list.accept(self)
