@@ -1,0 +1,22 @@
+fun nil fun1(x: bool, y: int, z: int, v: bool, is_even: bool)
+    while x and v and not is_even do
+        if y == 10 then
+            set v = false;
+        end
+        if y % 2 == 0 then
+            set z = y;
+        end
+        if y % 2 == 0 or z % 2 == 0 then
+            print("even number: " + itos(z) + "\n");
+            set is_even = true;
+        end
+        set y = y + 1;
+    end
+end
+
+var x = true;
+var y = 0;
+var z = 0;
+var v = true;
+var is_even = false;
+fun1(x,y,z,v, is_even);

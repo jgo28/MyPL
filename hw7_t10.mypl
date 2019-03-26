@@ -1,0 +1,36 @@
+struct Node
+    var val = 0;
+    var next: Node = nil;
+end
+
+var head = new Node;
+set head.val = 10;
+
+var x = head.val;
+var y = 1;
+
+if x < y then
+    print("x is less than y\n");
+else
+    print("x is greater than y\n");
+end
+
+if x == 10 then
+    print("equals\n");
+    set x = 10;
+end
+if x != 11 then
+    print("not equals\n");
+end
+if x < 15 then
+    print("less than\n");
+end
+if x <= 10 then
+    print("less than equal\n");
+end
+if x > 5 then
+    print("greater than\n");
+end
+if x >= 5 then
+    print("greater than equal\n");
+end

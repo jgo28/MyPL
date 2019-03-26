@@ -1,0 +1,13 @@
+fun int func(i: int)
+    var x = 0;
+    while x < i do
+        if x%2 == 0 then
+            print(itos(x) + " is even\n");
+        else
+            print(itos(x) + " is odd\n");
+        end
+        set x = x + 1;
+    end
+end
+
+func(10);

@@ -1,0 +1,11 @@
+fun int func(i: int, len: int)
+    print(itos(i) + "\n");
+    print(itos(len) + "\n");
+    while i < len do
+        set i = i + 1;
+    end
+end
+
+var len = 6;
+var i = 1;
+func(i, len);
