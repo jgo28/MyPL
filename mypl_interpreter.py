@@ -101,10 +101,10 @@ class Interpreter(ast.Visitor):
         self.sym_table.set_info(var_name, exp_value)
 
     def visit_assign_stmt(self, assign_stmt):
-        assign_stmt.lhs.accept(self)
-        lhs_value = self.current_value
         assign_stmt.rhs.accept(self)
         rhs_value = self.current_value
+        assign_stmt.lhs.accept(self)
+        lhs_value = self.current_value
         self.sym_table.set_info(lhs_value, rhs_value)
 
     def visit_struct_decl_stmt(self, struct_decl):
@@ -112,8 +112,6 @@ class Interpreter(ast.Visitor):
         env_id = self.sym_table.get_env_id()
         self.sym_table.add_id(struct_lexeme)
         self.sym_table.set_info(struct_lexeme, [env_id, struct_decl])
-        # for var_decl in struct_decl.var_decls:
-        #     var_decl.accept(self)
 
     def visit_fun_decl_stmt(self, fun_decl):
         # record AST node and store current environment id
@@ -252,18 +250,19 @@ class Interpreter(ast.Visitor):
 
     def visit_lvalue(self, lval):
         identifier = lval.path[0].lexeme
-        self.current_value = self.sym_table.get_info(identifier)
         if len(lval.path) == 1:
             self.sym_table.set_info(identifier, self.current_value)
         else:
-            for path_id in lval.path[1:]:
-                identifier = path_id.lexeme  # handle path expressions
-            oid = self.current_value
-            struct_obj = self.heap[oid]
-            struct_obj[identifier] = self.sym_table.get_info(identifier)
-            self.heap[oid] = struct_obj
-            #self.sym_table.set_info(identifier, self.current_value)
-        self.current_value = identifier
+            struct_obj = {}  # helper variable for the heap
+            for path_id in lval.path[0:]:   # handle path expressions
+                identifier = path_id.lexeme
+                if path_id == lval.path[0]:
+                    struct_obj = self.heap[self.sym_table.get_info(identifier)]
+                elif path_id == lval.path[-1]:
+                    oid = self.current_value
+                    struct_obj[identifier] = oid
+                else:
+                    struct_obj = self.heap[struct_obj[identifier]]
 
     def visit_fun_param(self, fun_param):
         self.current_value = fun_param.param_name.lexeme
@@ -331,7 +330,14 @@ class Interpreter(ast.Visitor):
     def visit_id_rvalue(self, id_rvalue):
         var_name = id_rvalue.path[0].lexeme
         var_val = self.sym_table.get_info(var_name)
-        for path_id in id_rvalue.path[1:]:
-            var_val = self.sym_table.get_info(path_id.lexeme)   # handle path expressions
+        struct_obj = {}  # helper variable to manage heaps
         self.current_value = var_val
-        #print(self.current_value)
+        for path_id in id_rvalue.path[0:]:  # handle path expressions
+            if len(id_rvalue.path) > 1:
+                identifier = path_id.lexeme
+                if path_id == id_rvalue.path[0]:  # first variable in path
+                    struct_obj = self.heap[self.sym_table.get_info(identifier)]
+                elif path_id == id_rvalue.path[-1]:  # last variable in path
+                    self.current_value = struct_obj[identifier]
+                else:  # path between first and last element
+                    struct_obj = self.heap[struct_obj[identifier]]
