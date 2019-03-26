@@ -318,8 +318,8 @@ class Interpreter(ast.Visitor):
                 if not self.sym_table.id_exists(fun_info[1].params[i]):
                     self.sym_table.add_id(fun_info[1].params[i])
                 self.sym_table.set_info(fun_info[1].params[i], arg_values[i])
-                print(fun_info[1].params[i])
-                print(arg_values[i])
+                # print(fun_info[1].params[i])
+                # print(arg_values[i])
                 i += 1
             # visit function's statement list
             try:
