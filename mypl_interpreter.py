@@ -314,11 +314,13 @@ class Interpreter(ast.Visitor):
             self.sym_table.set_env_id(fun_info[0])  # go to function decl environment id
             self.sym_table.push_environment()   # add new environment
             i = 0
-            while i < len(arg_values):     # initialise parameters with arg values
+            while i < len(arg_values):     # initialize parameters with arg values
                 if not self.sym_table.id_exists(fun_info[1].params[i]):
                     self.sym_table.add_id(fun_info[1].params[i])
                 self.sym_table.set_info(fun_info[1].params[i], arg_values[i])
-                i = i + 1
+                print(fun_info[1].params[i])
+                print(arg_values[i])
+                i += 1
             # visit function's statement list
             try:
                 fun_info[1].stmt_list.accept(self)

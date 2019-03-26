@@ -31,9 +31,19 @@ fun nil insert(tree: Node, val: int)
     end
 end
 
+# print out the tree in sorted order
+fun nil print_tree(tree: Node)
+    if tree != nil then
+        print_tree(tree.left);
+        print(" " + itos(tree.value));
+        print_tree(tree.right);
+    end
+end
 
 # example tree
 var tree = make_tree(10);
 insert(tree, 5);
+print("Tree Values:");
+print_tree(tree);
 
 
