@@ -307,20 +307,21 @@ class Interpreter(ast.Visitor):
         else:
             fun_info = self.sym_table.get_info(call_rvalue.fun.lexeme)     # get function information
             cur_env = self.sym_table.get_env_id()   # store current environment
-            arg_values = []
-            for i, arg in enumerate(call_rvalue.args):  # compute and store arg values
-                arg.accept(self)
-                arg_values.append(self.current_value)
+            # arg_values = []
+            # for i, arg in enumerate(call_rvalue.args):  # compute and store arg values
+            #     arg.accept(self)
+            #     arg_values.append(self.current_value)
             self.sym_table.set_env_id(fun_info[0])  # go to function decl environment id
+            arg_values = {}
+            for i, arg in enumerate(call_rvalue.args):
+                call_rvalue.args[i].accept(self)
+                arg_values[fun_info[1].params[i]] = self.current_value
+            print(arg_values)
+            for name, value in arg_values.items():
+                self.sym_table.add_id(name)
+                self.sym_table.set_info(name, value)
             self.sym_table.push_environment()   # add new environment
-            i = 0
-            while i < len(arg_values):     # initialize parameters with arg values
-                if not self.sym_table.id_exists(fun_info[1].params[i]):
-                    self.sym_table.add_id(fun_info[1].params[i])
-                self.sym_table.set_info(fun_info[1].params[i], arg_values[i])
-                print(fun_info[1].params[i])
-                print(arg_values[i])
-                i += 1
+
             # visit function's statement list
             try:
                 fun_info[1].stmt_list.accept(self)
