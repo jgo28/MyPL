@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 6
 # Description:
 #   Generates an error message if an error is found in the syntax, type, or grammer of a MyPL file.
 # ----------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Assignment: 6
 # Description:
 #   Implementation of the type checker class for MyPL. Will output errors if the types are not correct
 #   in their ordering.

@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Assignment: 6
-# Description: Creates a table containing the scope of the variables and functions used in MyPL files
+# Description: 
+#   Creates a table containing the scope of the variables and functions used in MyPL files
 #   ----------------------------------------------------------------------
 
 class SymbolTable(object):

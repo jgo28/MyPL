@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 6
-# Description: Tests the AST tree created from the parser
+# Description: 
+#   Tests the AST tree created from the parser
 #   ----------------------------------------------------------------------
 
 import mypl_token as token

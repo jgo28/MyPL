@@ -3,7 +3,7 @@
 # Author: Joshua Go
 # Assignment: 7
 # Description:
-# Simple script to execute the MyPL interpreter.
+#   Simple script to execute the MyPL interpreter.
 # ----------------------------------------------------------------------
 
 import mypl_error as error
@@ -18,7 +18,7 @@ import sys
 def main(filename):
     try:
         file_stream = open(filename, 'r')
-        hw7(file_stream)
+        script(file_stream)
         file_stream.close()
     except FileNotFoundError:
         sys.exit('invalid filename %s' % filename)
@@ -26,7 +26,7 @@ def main(filename):
         file_stream.close()
         sys.exit(e)
 
-def hw7(file_stream):
+def script(file_stream):
     the_lexer = lexer.Lexer(file_stream)
     the_parser = parser.Parser(the_lexer)
     stmt_list = the_parser.parse()

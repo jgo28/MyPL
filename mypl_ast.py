@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 6
 # Description:
 #   Contains the objects used for generating the AST tree in the parser file.
 # ----------------------------------------------------------------------

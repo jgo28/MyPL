@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 6
 # Description:
 #   This is a syntax checker that uses recursive descent parsing. It takes in a source file written in MyPL and reports
 #   the first error that it finds, or nothing if the input is syntactically well-formed.

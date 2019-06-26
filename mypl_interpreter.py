@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 7
 # Description:
 #   Implementation of a basic interpreter for MyPL
 # ----------------------------------------------------------------------

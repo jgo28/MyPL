@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 # Author: Joshua Go
-# Course: CPSC 326, Spring 2019
-# Assignment: 6
 # Description:
 #   Identifies token types such as comma and while. It takes in a source file written in MyPL and outputs the set of
 #   tokens in the file.
